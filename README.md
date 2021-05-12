@@ -7,7 +7,7 @@
 # Features
 
 - Automatic get next songs by "related videos"
-- Full controls
+- Controls -> Play, Pause, Reload, Skip and Volume.
 - Download
 - Media Session API
 
