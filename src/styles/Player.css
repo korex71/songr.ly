@@ -1,0 +1,296 @@
+div#Player {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* padding: 50px 35px; */
+  /* border: 1pt solid; */
+  /* margin: 20px 20px 0px 20px; */
+  border-radius: 8px;
+}
+
+div#Player .container img {
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.4s ease all;
+  /* width: 100%; */
+  width: 1170px;
+  height: 658px;
+}
+
+
+div#Player .container img:hover {
+  opacity: 1 ;
+}
+
+div#Player h1.song-time {
+  padding: 15px 0px 40px 10px;
+  font-size: 18px;
+}
+
+div#Player h1.song-title {
+  padding: 10px;
+  font-size: 20px;
+}
+
+div#Player div.controls {
+  display: flex;
+  justify-content: space-around;
+}
+
+div#Player button.btn-controls {
+  background: transparent;
+  color: white;
+  padding: 9px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+div#Player button.btn-controls:hover {    
+  background: red;
+  border-radius: 0px;
+
+}
+
+div#InputSearch {
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  top: 0;
+  position: absolute;
+  margin-top: 3em;
+  left: 0;
+  margin-left: 3.5em;
+  transition: 0.3s ease background;
+}
+
+div#InputSearch:hover {
+  background: #bd0303;
+}
+
+div#InputSearch button {
+  padding: 10px;
+  border-radius: 0px;
+  background: transparent;
+  color: white;
+}
+
+div#InputSearch input {
+  padding: 10px;
+  border-radius: 0%;
+  background: transparent;
+  color: white;
+}
+
+div#Searchlist {
+  background: #131313;
+    position: absolute;
+    opacity: 0.96;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+div.SearchContainer {
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* align-self: center; */
+    /* padding: 10px; */
+    height: 100vh;
+    /* margin: 50px; */
+}
+
+div.SearchContainer div.modalheader {
+  display: flex;
+    /* flex-direction: column; */
+    padding: 15px;
+    /* width: 100%; */
+    /* flex: 1; */
+    justify-content: flex-end;
+    /* background: #bd0303; */
+    width: 50%;
+    /* align-items: center; */
+    /* padding-left: 20px; */
+    cursor: pointer;
+    border: 1pt solid red;
+    cursor: pointer;
+    border-bottom: 0;
+}
+
+div.SearchContainer div.modalheader button {
+  padding: 3px 10px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+div.SearchContainer div.songbox {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  /* width: 100%; */
+  /* flex: 1; */
+  background: #bd0303;
+  width: 50%;
+  /* align-items: center; */
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+div.SearchContainer div.songbox div {
+  padding: 5px;
+}
+
+div.SearchContainer div.songbox:hover {
+  background-color: #790000;
+}
+
+div.song-info {
+  margin-top: 0.5em;
+}
+
+
+div.image-controls {
+  position: relative;
+}
+
+div.image-controls button {
+  position: absolute;
+  left: 30px;
+  bottom: 20px;
+  padding: 10px;
+  color: white;
+  background: #00000096;
+  transition: 0.3s ease background;
+  cursor: pointer;
+}
+
+div.image-controls button:hover {
+  background-color: #bd0303;
+}
+
+div.image-controls input {
+    position: absolute;
+    /* top: 0; */
+    right: 2%;
+    padding: 20px;
+    /* border-radius: 8px; */
+    opacity: 0 background;
+    background: #00000096;
+    bottom: 3.5%;
+}
+
+input[type=range] {
+  box-sizing: border-box;
+  font-size: 8px;
+  line-height: 1;
+  height: 2em;
+  background-color: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-ms-track {
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2em;
+  height: 2em;
+  margin-top: 0;
+  background-color: #fff;
+  border-radius: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+  width: 2em;
+  height: 2em;
+  margin-top: 0;
+  background-color: #fff;
+  border-radius: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+input[type=range]::-ms-thumb {
+  width: 2em;
+  height: 2em;
+  margin-top: 0;
+  background-color: #fff;
+  border-radius: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+input[type=range]:hover::-moz-range-thumb {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+input[type=range]:hover::-ms-thumb {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+input[type=range]:active::-webkit-slider-thumb {
+  border-color: #ffffff;
+}
+input[type=range]:active::-moz-range-thumb {
+  border-color: #ffffff;
+}
+input[type=range]:active::-ms-thumb {
+  border-color: #ffffff;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  cursor: pointer;
+  height: 1em;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+}
+input[type=range]::-moz-range-track {
+  cursor: pointer;
+  height: 1em;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+}
+input[type=range]::-ms-track {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+div.openSearch button {
+  position: absolute;
+  top: 3em;
+  right: 3.5em;
+  background: transparent;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s ease background;
+  z-index: 1;
+}
+
+div.openSearch button:hover {
+  background: #bd0303;
+
+}
+
+@media only screen and (max-width: 1550px) {
+  .container img {
+    width: 100%!important;
+    height: 100%!important;
+  }
+}

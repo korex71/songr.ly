@@ -1,0 +1,104 @@
+div#Search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: 40%;
+  background-color: transparent;
+}
+
+div#Search div.container {
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+}
+
+div#Search div.container input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0px;
+}
+
+div#Search div.container button {        
+  width: 30%;
+  border: 1pt solid #005400;
+  background-color: #005400;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s ease-in-out;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+div#Search div.container button:hover  {
+  border: 1pt solid green;
+  background-color: green;
+}
+
+div#Search div.results {    
+  display: flex;
+  flex-direction: column;
+  margin-top: 15%;
+  width: 100%;
+}
+
+div#Search div.results div {
+  padding: 10px 0px;
+}
+
+div#Search div.results div button {    
+  padding: 5px 0px;
+  border-radius: 0;
+  background: transparent;
+  margin: 5px 0px;
+  color: pointer;
+  color: red;
+}
+
+div#Search div.results div.song-box {
+  border-radius: 0px;
+  padding: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+div#Search div.results div.song-box:hover {
+  color: black;
+  background-color: white;
+}
+
+div#firstSearch {    
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+div#firstSearch input {
+  padding: 12px;
+  border-radius: 4px;
+  width: 90%;
+  background: black;
+  color: white;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+div#firstSearch button {    
+  padding: 5px 0px;
+  border-radius: 0;
+  background: black!important;
+  cursor: pointer;
+  margin: 0 !important;
+  width: 10%;
+  color: red;
+  background: white;
+  border-top-right-radius: 4px!important;
+  border-bottom-right-radius: 4px!important;
+}
+
+div#firstSearch button:hover {
+  background-color: rgb(192, 0, 0)!important;
+  color: white!important;
+}
