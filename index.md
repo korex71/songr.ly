@@ -24,5 +24,5 @@
 ```
 
 ![Image](./v1.png)
-![Image](https://korex71.github.io/songr.ly/v2.png)
+![Image](./v2.png)
 
