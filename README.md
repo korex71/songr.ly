@@ -2,7 +2,7 @@
 
 <img src="./public/v1.png">
 <br>
-<img src="./public/v2.png">
+<img src="./public/v2.png?raw=true">
 
 # Features
 
