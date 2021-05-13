@@ -1,6 +1,6 @@
 # Music Streaming app
 
-<img src="./public/v1.png">
+<img src="./public/v1.png?raw=true">
 <br>
 <img src="./public/v2.png?raw=true">
 
