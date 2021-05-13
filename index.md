@@ -22,6 +22,6 @@
 - `$~ yarn` or `$~ npm install`
 - `$~ yarn start`
 
-![Image](./v1.png)
-![Image]("./v2.png")
+![Image](https://korex71.github.io/songr.ly/v1.png)
+![Image](https://korex71.github.io/songr.ly/v2.png)
 ```
