@@ -12,12 +12,12 @@
 ```markdown
 - Clone project
 
-1. **Server**
+1. Server
 - `$~ cd songr.ly-master && cd server`
 - `$~ yarn` or `$~ npm install`
 - `$~ yarn dev`
 
-2. **Client**
+2. Client
 - `$~ cd songr.ly-master`
 - `$~ yarn` or `$~ npm install`
 - `$~ yarn start`
