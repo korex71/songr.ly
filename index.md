@@ -1,27 +1,27 @@
-## Welcome to GitHub Pages
+## Music Streaming app
 
-You can use the [editor on GitHub](https://github.com/korex71/songr.ly/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### Features
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+- Automatic get next songs by "related videos"
+- Controls -> Play, Pause, Reload, Skip and Volume.
+- Download
+- Media Session API
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Setup
 
 ```markdown
-Syntax highlighted code block
+- Clone project
 
-# Header 1
-## Header 2
-### Header 3
+**1. Server**
+- `$~ cd songr.ly-master && cd server`
+- `$~ yarn` or `$~ npm install`
+- `$~ yarn dev`
 
-- Bulleted
-- List
+**2. Client**
+- `$~ cd songr.ly-master`
+- `$~ yarn` or `$~ npm install`
+- `$~ yarn start`
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+![Image]("./v1.png")
+![Image]("./v2.png")
 ```
