@@ -121,7 +121,7 @@ function Player() {
 
     useEffect(() => {
       setNewSong(audio.current.id)
-    }, [isPlaying])
+    }, [isPlaying, audio])
 
     const handleSearch = () => {
       searchSong(search)

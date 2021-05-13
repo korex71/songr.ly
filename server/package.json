@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "assert": "^2.0.0",
+    "cors": "^2.8.5",
+    "event-stream": "^4.0.1",
+    "express": "^4.17.1",
+    "got": "^11.8.2",
+    "youtube-dl-exec": "^1.2.3",
+    "youtube-suggest": "^1.1.2",
+    "ytdl-core": "^4.7.0",
+    "ytsr": "^3.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

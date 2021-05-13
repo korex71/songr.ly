@@ -5,11 +5,10 @@ const getRandomInt = (min, max) => {
 };
 
 const secondsToMinutes = (time) => {
-  if (!Number(time)) return "";
+  if (isNaN(time)) return "";
   let seconds = Math.floor(time % 60);
-  let formatSeconds = seconds < 10 ? "0" + seconds : seconds;
 
-  return Math.floor(time / 60) + ":" + formatSeconds;
+  return Math.floor(time / 60) + ":" + seconds < 10 ? "0" + seconds : seconds;
 };
 
 export { secondsToMinutes, getRandomInt };
