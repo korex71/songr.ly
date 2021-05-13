@@ -21,7 +21,8 @@
 - `$~ cd songr.ly-master`
 - `$~ yarn` or `$~ npm install`
 - `$~ yarn start`
-
-![Image](https://korex71.github.io/songr.ly/v1.png)
-![Image](https://korex71.github.io/songr.ly/v2.png)
 ```
+
+![Image](./v1.png)
+![Image](https://korex71.github.io/songr.ly/v2.png)
+
