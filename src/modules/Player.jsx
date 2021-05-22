@@ -1,8 +1,17 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
 import PlayerContext from "../context/PlayerContext"
 import * as Feather from 'react-feather'
-import "../styles/Player.css"
+import {
+  Search, 
+  ImageControls, 
+  Container, 
+  Wrapper, 
+  Controls, 
+  SongInfo, 
+  SetSearch
+} from  "../styles/Player.js"
 import { secondsToMinutes } from "../helpers"
+import {API_URL} from "../api/constants"
 import axios from "../api/axios"
 
 function Player() {
@@ -82,7 +91,7 @@ function Player() {
 
         setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
         
-        audio.current.src = `${process.env.REACT_APP_API_URL}/audio/${id}`
+        audio.current.src = `${API_URL}/audio/${id}`
         
         audio.current.id = id;
         return audio.current.play();
@@ -99,7 +108,7 @@ function Player() {
 
       setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
       
-      audio.current.src = `${process.env.REACT_APP_API_URL}/audio/${id}`
+      audio.current.src = `${API_URL}/audio/${id}`
       
       audio.current.id = id;
       audio.current.play();
@@ -110,7 +119,7 @@ function Player() {
 
     audio.current.ontimeupdate = () => setTime(secondsToMinutes(audio.current.currentTime))
 
-    audio.current.onerror = () => console.error('Não foi possível alcançar o servidor')
+    audio.current.onerror = (error) => console.error('Não foi possível alcançar o servidor', error || "")
 
     audio.current.onended = () => playNextSong()
 
@@ -128,46 +137,42 @@ function Player() {
       setSearch("")
     }
 
-    
-
     if('title' in songInfo)
       return (
-        <div id="Player">
-          <div id="InputSearch">
+        <Wrapper>
+          <Search>
             <button onClick={() => handleSearch()}>
               <Feather.Search />
             </button>
             <input type="text" ref={inputRef} value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSearch()}/>
-          </div>
-          <div className="container">
-            <div className="image-controls">
-              <img src={songInfo.thumbnail} alt="" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}}/>
+          </Search>
+          <Container>
+            <ImageControls>
+              <img src={songInfo.thumbnail} alt="Thumbnail" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}}/>
               <button onClick={() => {window.open(audio.current.src, "_blank")}}>
                 <Feather.Download />
               </button>
-              <input type="range" value={volume || 0} min="0" max="100" aria-orientation="vertical" onChange={(e) => setVolume(e.target.value)} />
-            </div>
-              <div className="song-info">
+              <input type="range" value={volume || 0} min="0" max="100" onChange={(e) => setVolume(e.target.value)} />
+            </ImageControls>
+              <SongInfo>
                 <h1 className="song-title">{songInfo.title}</h1>
                 <h1 className="song-title">{songInfo.artist}</h1>
                 <h1 className="song-time">{time || '0:00'} / {duration || '0:00'}</h1>
-              </div>
-            <div className="controls">
-              <button className="btn-controls" id="btn-play" onClick={() => {audio.current.currentTime = 0}} alt="Replay"><Feather.Repeat /></button>
-              <button className="btn-controls" id="btn-play" onClick={() => triggerPlay()} alt="Play/Pause">
+              </SongInfo>
+            <Controls>
+              <button onClick={() => {audio.current.currentTime = 0}} alt="Replay"><Feather.Repeat /></button>
+              <button onClick={() => triggerPlay()} alt="Play/Pause">
                 { isPlaying ? <Feather.Pause /> : <Feather.Play /> }
               </button>
-              <button className="btn-controls" id="btn-play" onClick={() => playNextSong()} alt="Skip"><Feather.SkipForward /></button>
-            </div>
-          </div>
-
-          
-              <div className="openSearch">
-                <button onClick={() => setActiveSearch(!activeSearch)}>
-                  <Feather.List />
-                </button>
-              </div>
-        </div>
+              <button onClick={() => playNextSong()} alt="Skip"><Feather.SkipForward /></button>
+            </Controls>
+          </Container>
+            <SetSearch>
+              <button onClick={() => setActiveSearch(!activeSearch)}>
+                <Feather.List />
+              </button>
+            </SetSearch>
+        </Wrapper>
       )
     else
       return ""

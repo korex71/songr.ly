@@ -3,7 +3,9 @@ import Player from "./modules/Player";
 import Search from "./modules/Search";
 import axios from "./api/axios";
 import { PlayerProvider } from "./context/PlayerContext";
-import "./styles/App.css";
+import Wrapper from "./styles/App";
+import GlobalStyle from "./styles/global"
+import { API_URL } from "./api/constants";
 
 function App() {
   const audio = useRef(new Audio());
@@ -29,7 +31,7 @@ function App() {
 
   useEffect(() => {
     if (songUri === "") return;
-    audio.current.src = `${process.env.REACT_APP_API_URL}/audio/${songUri}`
+    audio.current.src = `${API_URL}/audio/${songUri}`
     audio.current.id = songUri;
     audio.current.play();
     setActiveSearch(false);
@@ -53,10 +55,11 @@ function App() {
 
   return (
     <PlayerProvider value={data}>
-      <div className="App">
+      <GlobalStyle />
+      <Wrapper>
         <Player />
         <Search />
-      </div>
+      </Wrapper>
     </PlayerProvider>
   );
 }

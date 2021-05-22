@@ -4,11 +4,15 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const secondsToMinutes = (time) => {
-  if (isNaN(time)) return "";
-  let seconds = Math.floor(time % 60);
-
-  return Math.floor(time / 60) + ":" + seconds < 10 ? "0" + seconds : seconds;
-};
+const secondsToMinutes = (time) =>
+  isNaN(time)
+    ? ""
+    : Math.floor(time / 60) +
+      ":" +
+      `${
+        Math.floor(time % 60) < 10
+          ? "0" + String(Math.floor(time % 60))
+          : Math.floor(time % 60)
+      }`;
 
 export { secondsToMinutes, getRandomInt };
