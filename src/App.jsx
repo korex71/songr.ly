@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import Player from "./modules/Player";
-import Search from "./modules/Search";
 import axios from "./api/axios";
 import { PlayerProvider } from "./context/PlayerContext";
 import Wrapper from "./styles/App";
@@ -13,7 +12,7 @@ function App() {
   const [songUri, setSongUri] = useState("");
   const [search, setSearch] = useState("");
   const [results, setResults] = useState();
-  const [activeSearch, setActiveSearch] = useState(true);
+  const [activeSearch, setActiveSearch] = useState(false);
 
   const searchSong = async (value) => {
     const response = await axios.get(`/search/${value}`);

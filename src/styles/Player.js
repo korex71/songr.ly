@@ -9,6 +9,51 @@ export const Wrapper = styled.div`
   border-radius: 8px;
 `;
 
+export const SearchModal = styled.div`
+  position: absolute;
+  opacity: 0.8;
+  background: black;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
+  display: ${(props) => (props.active ? "flex" : "none")};
+  justify-content: center;
+
+  #modal {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: 30px 20px;
+
+    input {
+      border: 1pt solid white;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 0.5em;
+    }
+
+    #results {
+      display: flex;
+      flex-direction: column;
+
+      #item {
+        display: flex;
+        cursor: pointer;
+
+        &:hover {
+          border-right: 1pt solid;
+          padding: 5px 0px;
+        }
+
+        p {
+          align-self: center;
+          margin-left: 1em;
+        }
+      }
+    }
+  }
+`;
+
 export const Search = styled.div`
   display: flex;
   flex-direction: row;
@@ -196,6 +241,7 @@ export const SetSearch = styled.div`
     background: transparent;
     color: white;
     padding: 10px;
+    padding-bottom: 7px;
     cursor: pointer;
     transition: 0.3s ease background;
     z-index: 1;

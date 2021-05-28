@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react"
+import React, { useContext, useState, useEffect} from "react"
 import PlayerContext from "../context/PlayerContext"
 import * as Feather from 'react-feather'
 import {
@@ -8,14 +8,15 @@ import {
   Wrapper, 
   Controls, 
   SongInfo, 
-  SetSearch
+  SetSearch,
+  SearchModal
 } from  "../styles/Player.js"
 import { secondsToMinutes } from "../helpers"
 import {API_URL} from "../api/constants"
 import axios from "../api/axios"
 
 function Player() {
-    const {triggerPlay, audio, searchSong, activeSearch, setActiveSearch} = useContext(PlayerContext)
+    const {triggerPlay, audio, searchSong, activeSearch, setActiveSearch, results} = useContext(PlayerContext)
 
     const [time, setTime] = useState(0)
     const [volume, setVolume] = useState(100)
@@ -26,7 +27,7 @@ function Player() {
     const [nextSongs, setNextSongs] = useState([])
     const [search, setSearch] = useState("")
 
-    useEffect(() => {
+    useEffect(() => { // Get song from localstorage and play.
       const song = localStorage.getItem("@App:song");
 
       if(song){
@@ -36,16 +37,16 @@ function Player() {
         const title = info.media.song || info.title
         const artist = info.media.artist || info.author.name;
         console.log(`Last song from storage: ${title} - ${artist} - ${id}`)
-        setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
+        setSongInfo({title, artist, thumbnail: `http://i.ytimg.com/vi/${id}/maxresdefault.jpg`})
         audio.current.src = `${API_URL}/audio/${id}`
         
         audio.current.id = id;
         
         return audio.current.play();
       }
-    }, [])
+    }, [audio])
 
-    useEffect(() => {
+    useEffect(() => { // Detect new song and request info for mediasession
       if(!newSong) return
       console.log('Request info for', audio.current.id)
       axios.post('/audio/info', {id: audio.current.id})
@@ -98,6 +99,19 @@ function Player() {
       localStorage.setItem("@App:song", JSON.stringify(song))
     }
 
+    const handleSetSong = (song) => {
+      const id = song.id || song.videoId;
+      const title = song.hasOwnProperty("media") ? song.media.song : song.title
+      const artist = song.hasOwnProperty("media") ? song.media.author : song.author.name;
+      console.log(`Playlist from: ${title} - ${artist} - ${id}`)
+      setSongInfo({title, artist, thumbnail: `http://i.ytimg.com/vi/${id}/maxresdefault.jpg`})
+      audio.current.src = `${API_URL}/audio/${id}`
+      
+      audio.current.id = id;
+
+      return audio.current.play();
+    } 
+
     const generatePlaylistById = async (id, next) => {
       axios.post("/audio", {id})
       .then(res => res.data)
@@ -127,25 +141,6 @@ function Player() {
           return audio.current.play();
 
         })
-        // const {data: relatedSongs} = await axios.post(`/audio`, {id: audio.current.id})
-
-        // const nextSong = relatedSongs.related_videos[0];
-
-        // const relatedList = relatedSongs.related_videos.slice(1);
-
-        // setNextSongs(relatedList);
-        
-        // const {id, title} = nextSong
-        // const artist = nextSong.author.name;
-
-        // console.log(`Playlist: ${title} - ${artist}`)
-
-        // setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
-        
-        // audio.current.src = `${API_URL}/audio/${id}`
-        
-        // audio.current.id = id;
-        // return audio.current.play();
       }
 
       const nextSong = nextSongs[0];
@@ -183,15 +178,44 @@ function Player() {
       setSearch("")
     }
 
-    if('title' in songInfo)
+    useEffect(() => {
+      console.log(results)
+    }, [results])
+
       return (
         <Wrapper>
           <Search>
-            <button onClick={() => handleSearch()}>
+            <button onClick={() => setActiveSearch(true)}>
               <Feather.Search />
             </button>
-            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSearch()}/>
+            
           </Search>
+
+          <SearchModal active={activeSearch}>
+            <div id="modal">
+              <input type="text" 
+              value={search}
+              placeholder="Músicas, podcasts, artistas, etc..."
+              onChange={(e) => setSearch(e.target.value)} 
+              onKeyPress={e => e.key === 'Enter' && handleSearch()}
+              />
+              <div id="results">
+                {
+                  results && results.map(item => {
+                    return (
+                      <div id="item" onClick={() => handleSetSong(item)}>
+                        <img src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`} alt="item" width="64" height="64"/>
+                        <p class="title">{item.title}</p>
+                      </div>
+                    )
+                  })
+                }
+                <div id="item">
+                </div>
+              </div>
+            </div>
+          </SearchModal>
+
           <Container>
             <ImageControls>
               <img src={songInfo.thumbnail} alt="Thumbnail" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}}/>
@@ -215,13 +239,11 @@ function Player() {
           </Container>
             <SetSearch>
               <button onClick={() => setActiveSearch(!activeSearch)}>
-                <Feather.List />
+                {activeSearch ? (<Feather.X />) : <Feather.List />}
               </button>
             </SetSearch>
         </Wrapper>
       )
-    else
-      return ""
 }
 
 export default Player
