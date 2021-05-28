@@ -17,23 +17,42 @@ import axios from "../api/axios"
 function Player() {
     const {triggerPlay, audio, searchSong, activeSearch, setActiveSearch} = useContext(PlayerContext)
 
-    const inputRef = useRef(null)
-
     const [time, setTime] = useState(0)
     const [volume, setVolume] = useState(100)
     const [duration, setDuration] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
     const [newSong, setNewSong] = useState("")
     const [songInfo, setSongInfo] = useState({})
-    const [nextSongs, setNextSongs] = useState(null)
+    const [nextSongs, setNextSongs] = useState([])
     const [search, setSearch] = useState("")
 
     useEffect(() => {
-      if(newSong === "") return
+      const song = localStorage.getItem("@App:song");
+
+      if(song){
+        const info = JSON.parse(song);
+
+        const id = info.videoId;
+        const title = info.media.song || info.title
+        const artist = info.media.artist || info.author.name;
+        console.log(`Last song from storage: ${title} - ${artist} - ${id}`)
+        setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
+        audio.current.src = `${API_URL}/audio/${id}`
+        
+        audio.current.id = id;
+        
+        return audio.current.play();
+      }
+    }, [])
+
+    useEffect(() => {
+      if(!newSong) return
       console.log('Request info for', audio.current.id)
       axios.post('/audio/info', {id: audio.current.id})
       .then(res => {
           const info = res.data.videoDetails;
+
+          setSongOnLocalstorage(info);
 
           const id = info.videoId
           const title = info.media.song || info.title;
@@ -71,43 +90,70 @@ function Player() {
       audio.current.volume = volume / 100
     }, [volume]) // eslint-disable-line
 
+    useEffect(() => {
+      console.log(nextSongs)
+    }, [nextSongs])
+
+    const setSongOnLocalstorage = (song) => {
+      localStorage.setItem("@App:song", JSON.stringify(song))
+    }
+
+    const generatePlaylistById = async (id, next) => {
+      axios.post("/audio", {id})
+      .then(res => res.data)
+      .then(data => data.related_videos)
+      .then(songs => {
+        const firstSong = songs[0];
+        const list = songs.slice(1);
+        setNextSongs(list);
+        next(firstSong)
+      })
+      .catch(err => console.error(err))
+    }
+
     const playNextSong = async () => {
 
-      console.log(nextSongs)
+      if(!nextSongs.length){
+        return generatePlaylistById(audio.current.id, (song) => {
+          if(!song) return null;
 
-      if(!nextSongs){
-        const {data: relatedSongs} = await axios.post(`/audio`, {id: audio.current.id})
+          const {id, title} = song;
+          const artist = song.author.name;
+          console.log(`Playlist from: ${title} - ${artist} - ${id}`)
+          setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
+          audio.current.src = `${API_URL}/audio/${id}`
+          
+          audio.current.id = id;
+          return audio.current.play();
 
-        const nextSong = relatedSongs.related_videos[0];
+        })
+        // const {data: relatedSongs} = await axios.post(`/audio`, {id: audio.current.id})
 
-        const Next = relatedSongs.related_videos.slice(1);
+        // const nextSong = relatedSongs.related_videos[0];
 
-        setNextSongs(Next);
+        // const relatedList = relatedSongs.related_videos.slice(1);
+
+        // setNextSongs(relatedList);
         
-        const {id, title} = nextSong
-        const artist = nextSong.author.name;
+        // const {id, title} = nextSong
+        // const artist = nextSong.author.name;
 
-        console.log(`Playlist: ${title} - ${artist}`)
+        // console.log(`Playlist: ${title} - ${artist}`)
 
-        setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
+        // setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
         
-        audio.current.src = `${API_URL}/audio/${id}`
+        // audio.current.src = `${API_URL}/audio/${id}`
         
-        audio.current.id = id;
-        return audio.current.play();
+        // audio.current.id = id;
+        // return audio.current.play();
       }
 
       const nextSong = nextSongs[0];
 
       setNextSongs(nextSongs.slice(1))
       
-      const {id, title} = nextSong
-      const artist = nextSong.author.name;
+      const {id} = nextSong
 
-      console.log(`Playlist: ${title} - ${artist}`)
-
-      setSongInfo({title, artist, thumbnail: songInfo.thumbnail})
-      
       audio.current.src = `${API_URL}/audio/${id}`
       
       audio.current.id = id;
@@ -119,7 +165,7 @@ function Player() {
 
     audio.current.ontimeupdate = () => setTime(secondsToMinutes(audio.current.currentTime))
 
-    audio.current.onerror = (error) => console.error('Não foi possível alcançar o servidor', error || "")
+    audio.current.onerror = (error) => console.warn('Não foi possível alcançar o servidor', error.message)
 
     audio.current.onended = () => playNextSong()
 
@@ -144,7 +190,7 @@ function Player() {
             <button onClick={() => handleSearch()}>
               <Feather.Search />
             </button>
-            <input type="text" ref={inputRef} value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSearch()}/>
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSearch()}/>
           </Search>
           <Container>
             <ImageControls>
