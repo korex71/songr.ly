@@ -58,7 +58,6 @@ function App() {
       <GlobalStyle />
       <Wrapper>
         <Player />
-        <Search />
       </Wrapper>
     </PlayerProvider>
   );
