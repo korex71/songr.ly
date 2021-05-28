@@ -85,6 +85,8 @@ export const Search = styled.div`
 `;
 
 export const Container = styled.div`
+  display: ${(props) => (props.active ? "block" : "none")};
+
   @media only screen and (max-width: 1550px) {
     .container img {
       width: 100% !important;
@@ -190,9 +192,8 @@ export const ImageControls = styled.div`
     border-radius: 30px;
     cursor: pointer;
     transition: 0.4s ease all;
-    /* width: 100%; */
     width: 100%;
-    height: 35em;
+    height: 100%;
 
     &:hover {
       opacity: 1;

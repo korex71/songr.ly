@@ -25,6 +25,7 @@ function Player() {
     const [newSong, setNewSong] = useState("")
     const [songInfo, setSongInfo] = useState({})
     const [nextSongs, setNextSongs] = useState([])
+    const [container, setContainer] = useState(false)
     const [search, setSearch] = useState("")
 
     useEffect(() => { // Get song from localstorage and play.
@@ -105,6 +106,7 @@ function Player() {
       const artist = song.hasOwnProperty("media") ? song.media.author : song.author.name;
       console.log(`Playlist from: ${title} - ${artist} - ${id}`)
       setSongInfo({title, artist, thumbnail: `http://i.ytimg.com/vi/${id}/maxresdefault.jpg`})
+      setActiveSearch(false)
       audio.current.src = `${API_URL}/audio/${id}`
       
       audio.current.id = id;
@@ -182,6 +184,14 @@ function Player() {
       console.log(results)
     }, [results])
 
+    useEffect(() => {
+      if('title' in songInfo){
+        setContainer(true)
+      }else {
+        setActiveSearch(true)
+      }
+    }, [songInfo])
+
       return (
         <Wrapper>
           <Search>
@@ -210,13 +220,11 @@ function Player() {
                     )
                   })
                 }
-                <div id="item">
-                </div>
               </div>
             </div>
           </SearchModal>
 
-          <Container>
+          <Container active={container}>
             <ImageControls>
               <img src={songInfo.thumbnail} alt="Thumbnail" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}}/>
               <button onClick={() => {window.open(audio.current.src, "_blank")}}>
