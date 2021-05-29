@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 
 export const SearchModal = styled.div`
   position: absolute;
-  opacity: 0.8;
+  opacity: 0.9;
   background: black;
   height: 100vh;
   width: 100vw;

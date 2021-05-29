@@ -29,7 +29,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (songUri === "") return;
+    if (!songUri) return;
     audio.current.src = `${API_URL}/audio/${songUri}`
     audio.current.id = songUri;
     audio.current.play();

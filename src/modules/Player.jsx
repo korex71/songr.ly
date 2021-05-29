@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect} from "react"
+import React, { useContext, useState, useEffect, useRef} from "react"
 import PlayerContext from "../context/PlayerContext"
 import * as Feather from 'react-feather'
 import {
@@ -14,9 +14,12 @@ import {
 import { secondsToMinutes } from "../helpers"
 import {API_URL} from "../api/constants"
 import axios from "../api/axios"
+import Loading from "../components/Loading"
 
 function Player() {
     const {triggerPlay, audio, searchSong, activeSearch, setActiveSearch, results} = useContext(PlayerContext)
+
+    const imgRef = useRef()
 
     const [time, setTime] = useState(0)
     const [volume, setVolume] = useState(100)
@@ -26,6 +29,7 @@ function Player() {
     const [songInfo, setSongInfo] = useState({})
     const [nextSongs, setNextSongs] = useState([])
     const [container, setContainer] = useState(false)
+    const [loadingSearch, setLoadingSearch] = useState(false)
     const [search, setSearch] = useState("")
 
     useEffect(() => { // Get song from localstorage and play.
@@ -112,7 +116,7 @@ function Player() {
       audio.current.id = id;
 
       return audio.current.play();
-    } 
+    }
 
     const generatePlaylistById = async (id, next) => {
       axios.post("/audio", {id})
@@ -156,13 +160,19 @@ function Player() {
       audio.current.id = id;
       audio.current.play();
     }
-    
+
+    const handleSearch = () => {
+      searchSong(search)
+      setLoadingSearch(true)
+      setSearch("")
+    }
+
     audio.current.onplaying = () => setIsPlaying(true)
     audio.current.onpause = () => setIsPlaying(false)
 
     audio.current.ontimeupdate = () => setTime(secondsToMinutes(audio.current.currentTime))
 
-    audio.current.onerror = (error) => console.warn('Não foi possível alcançar o servidor', error.message)
+    audio.current.onerror = (error) => console.warn('Não foi possível alcançar o servidor', error.message || error)
 
     audio.current.onended = () => playNextSong()
 
@@ -171,26 +181,22 @@ function Player() {
       setDuration(secondsToMinutes(audio.current.duration))
     }
 
-    useEffect(() => {
-      setNewSong(audio.current.id)
-    }, [isPlaying, audio])
-
-    const handleSearch = () => {
-      searchSong(search)
-      setSearch("")
-    }
+    useEffect(() => setNewSong(audio.current.id), [isPlaying, audio])
 
     useEffect(() => {
-      console.log(results)
+      if(results){
+        setLoadingSearch(false)
+      }
     }, [results])
 
     useEffect(() => {
       if('title' in songInfo){
         setContainer(true)
+        setActiveSearch(false)
       }else {
         setActiveSearch(true)
       }
-    }, [songInfo])
+    }, [songInfo, setActiveSearch])
 
       return (
         <Wrapper>
@@ -200,8 +206,8 @@ function Player() {
             </button>
             
           </Search>
-
-          <SearchModal active={activeSearch}>
+          
+          <SearchModal active={activeSearch} className="modal-container">
             <div id="modal">
               <input type="text" 
               value={search}
@@ -211,14 +217,16 @@ function Player() {
               />
               <div id="results">
                 {
-                  results && results.map(item => {
+                  loadingSearch 
+                  ? (<div id="load"><Loading /></div>)
+                  : (results && results.map(item => {
                     return (
                       <div id="item" onClick={() => handleSetSong(item)}>
-                        <img src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`} alt="item" width="64" height="64"/>
+                        <img ref={imgRef} src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`} alt="item" width="64" height="64"/>
                         <p class="title">{item.title}</p>
                       </div>
                     )
-                  })
+                  }))
                 }
               </div>
             </div>
@@ -226,7 +234,7 @@ function Player() {
 
           <Container active={container}>
             <ImageControls>
-              <img src={songInfo.thumbnail} alt="Thumbnail" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}}/>
+              <img src={songInfo.thumbnail} alt="Thumbnail" onClick={() => triggerPlay()} style={{opacity: !isPlaying && 0.5, borderRadius: !isPlaying && 0}} />
               <button onClick={() => {window.open(audio.current.src, "_blank")}}>
                 <Feather.Download />
               </button>
