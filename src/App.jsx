@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect} from "react";
 import Player from "./modules/Player";
 import axios from "./api/axios";
 import { PlayerProvider } from "./context/PlayerContext";
@@ -56,7 +56,7 @@ function App() {
     <PlayerProvider value={data}>
       <GlobalStyle />
       <Wrapper>
-        <Player />
+          <Player />
       </Wrapper>
     </PlayerProvider>
   );
