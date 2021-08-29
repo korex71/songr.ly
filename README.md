@@ -1,5 +1,7 @@
 # Music Streaming app
 
+[![stability-deprecated](https://img.shields.io/badge/stability-deprecated-red.svg)](https://github.com/emersion/stability-badges#deprecated)
+
 <img src="./public/v1.png?raw=true">
 <br>
 <img src="./public/v2.png?raw=true">
